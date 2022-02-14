@@ -14,15 +14,15 @@ int callback(ffi.Pointer<ffi.Int8> msg) {
 const except = -1;
 typedef dart_callback = int Function(ffi.Pointer<ffi.Int8>);
 void main() {
-  //if (Platform.isWindows) {
-  var libraryPath = path.join(Directory.current.path, 'TextExtraction.so');
+  var libraryPath = path.join(Directory.current.path, 'TextExtraction.dll');
+  if (Platform.isLinux) {
+    libraryPath = path.join(Directory.current.path, 'TextExtraction.so');
+  }
   final dylib = ffi.DynamicLibrary.open(libraryPath);
 
   var pdf = PDFTextExtractionBindings(dylib);
   var allocator = malloc;
-  var uriPointer = stringToNativeInt8(
-      '1417.pdf',
-      allocator: malloc);
+  var uriPointer = stringToNativeInt8('1417.pdf', allocator: malloc);
 
   var result = pdf.extractText(
       uriPointer,
