@@ -10,6 +10,9 @@ dependencies:
   ffi: ^1.1.2
   path: ^1.8.1 
 
+  http: ^0.13.3
+  postgres: ^2.4.3
+
 dev_dependencies: 
   build_runner: ^2.1.2
   ffigen: ^2.4.2

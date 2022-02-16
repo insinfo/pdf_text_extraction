@@ -6,7 +6,7 @@ import 'package:path/path.dart' as path;
 import 'dart:ffi' as ffi;
 import 'package:pdf_text_extraction/pdf_text_extraction.dart';
 
-int callback(ffi.Pointer<ffi.Int8> msg) {
+int logCallback(ffi.Pointer<ffi.Int8> msg) {
   print(nativeInt8ToString(msg));
   return 0;
 }
@@ -23,6 +23,8 @@ void main() {
   var pdf = PDFTextExtractionBindings(dylib);
   var allocator = malloc;
   var uriPointer = stringToNativeInt8('1417.pdf', allocator: malloc);
+  var pages = pdf.getPagesCount(uriPointer, ffi.nullptr);
+  print('pages $pages');
 
   var result = pdf.extractText(
       uriPointer,
@@ -31,7 +33,7 @@ void main() {
       ffi.Pointer.fromFunction<
           ffi.Int32 Function(
         ffi.Pointer<ffi.Int8>,
-      )>(callback, except));
+      )>(logCallback, except));
 
   allocator.free(uriPointer);
   var text = nativeInt8ToString(result);

@@ -1,12 +1,14 @@
-name: 'PDFTextExtractionBindings'
+#name: 'PDFTextExtractionBindings'
+name: 'PDFToTextBindings'
 description: 'Bindings to PDFTextExtraction'
-output: 'lib/src/pdf_text_extraction_bindings.dart'
+#output: 'lib/src/pdf_text_extraction_bindings.dart'
+output: 'lib/src/pdf_to_text_bindings.dart'
 llvm-path:     
   - 'C:\Program Files\llvm'      
 headers:
   entry-points:
-    #- 'libssh/include/libssh/sftp.h'     
-    - 'C:\MyCppProjects\pdf-text-extraction\TextExtraction\Lib.h' 
+    - 'C:\MyCppProjects\xpdf-4.03\xpdf\Lib.h'     
+    #- 'C:\MyCppProjects\pdf-text-extraction\TextExtraction\Lib.h' 
   #include-directives:
     #- '**sftp.h'
     #- 'libssh/include/libssh/**'
