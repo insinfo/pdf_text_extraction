@@ -10,10 +10,10 @@ import 'package:pdf_text_extraction/src/utils.dart';
 class PDFTextExtractionWrapping {
   PDFTextExtractionBindings? pdfTextExtractionBindings;
   static const except = -1;
-  static String lastError = '';
-  static int logCallback(ffi.Pointer<ffi.Int8> msg) {
-    lastError = nativeInt8ToString(msg);
-    print('PDFTextExtractionWrapping log: $lastError');
+  static String _lastError = '';
+  static int _logCallback(ffi.Pointer<ffi.Int8> msg) {
+    _lastError = nativeInt8ToString(msg);
+    print('PDFTextExtractionWrapping log: $_lastError');
     return 0;
   }
 
@@ -27,7 +27,7 @@ class PDFTextExtractionWrapping {
   }
 
   String extractTextAsXML(String inputPdfFilePath,
-      {int startPage = 0, int endPage = -1, ffi.Allocator allocator = malloc}) {
+      {int startPage = 0, int endPage = -1, ffi.Allocator allocator = calloc}) {
     var uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       var result = pdfTextExtractionBindings!.extractTextAsXML(
@@ -37,13 +37,13 @@ class PDFTextExtractionWrapping {
           ffi.Pointer.fromFunction<
               ffi.Int32 Function(
             ffi.Pointer<ffi.Int8>,
-          )>(logCallback, except));
+          )>(_logCallback, except));
 
       var text = nativeInt8ToString(result);
       if (text != '-1') {
         return text;
       } else {
-        throw Exception('Error extracting text from PDF: $lastError');
+        throw Exception('Error extracting text from PDF: $_lastError');
       }
     } catch (e) {
       rethrow;
@@ -53,7 +53,7 @@ class PDFTextExtractionWrapping {
   }
 
   String extractText(String inputPdfFilePath,
-      {int startPage = 0, int endPage = -1, ffi.Allocator allocator = malloc}) {
+      {int startPage = 0, int endPage = -1, ffi.Allocator allocator = calloc}) {
     var uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       var result = pdfTextExtractionBindings!.extractText(
@@ -63,13 +63,13 @@ class PDFTextExtractionWrapping {
           ffi.Pointer.fromFunction<
               ffi.Int32 Function(
             ffi.Pointer<ffi.Int8>,
-          )>(logCallback, except));
+          )>(_logCallback, except));
 
       var text = nativeInt8ToString(result);
       if (text != '-1') {
         return text;
       } else {
-        throw Exception('Error extracting text from PDF: $lastError');
+        throw Exception('Error extracting text from PDF: $_lastError');
       }
     } catch (e) {
       rethrow;
@@ -79,7 +79,7 @@ class PDFTextExtractionWrapping {
   }
 
   int getPagesCount(String inputPdfFilePath,
-      {ffi.Allocator allocator = malloc}) {
+      {ffi.Allocator allocator = calloc}) {
     var uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       var result = pdfTextExtractionBindings!.getPagesCount(
@@ -87,12 +87,12 @@ class PDFTextExtractionWrapping {
           ffi.Pointer.fromFunction<
               ffi.Int32 Function(
             ffi.Pointer<ffi.Int8>,
-          )>(logCallback, except));
+          )>(_logCallback, except));
 
       if (result != -1) {
         return result;
       } else {
-        throw Exception('Error on PDF pages count: $lastError');
+        throw Exception('Error on PDF pages count: $_lastError');
       }
     } catch (e) {
       rethrow;

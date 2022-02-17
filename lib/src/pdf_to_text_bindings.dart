@@ -25,8 +25,10 @@ class PDFToTextBindings {
     int lastPage,
     ffi.Pointer<ffi.Int8> textOutEnc,
     ffi.Pointer<ffi.Int8> layout,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_1>> textOutputFunc,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_2>> logCallback,
+    ffi.Pointer<ffi.Pointer<ffi.Int8>> textOutput,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_1>> logCallback,
+    ffi.Pointer<ffi.Int8> ownerPassword,
+    ffi.Pointer<ffi.Int8> userPassword,
   ) {
     return _extractText(
       fileName,
@@ -34,8 +36,10 @@ class PDFToTextBindings {
       lastPage,
       textOutEnc,
       layout,
-      textOutputFunc,
+      textOutput,
       logCallback,
+      ownerPassword,
+      userPassword,
     );
   }
 
@@ -43,15 +47,28 @@ class PDFToTextBindings {
       _lookup<ffi.NativeFunction<_c_extractText>>('extractText');
   late final _dart_extractText _extractText =
       _extractText_ptr.asFunction<_dart_extractText>();
+
+  int getNumPages(
+    ffi.Pointer<ffi.Int8> fileName,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_2>> logCallback,
+    ffi.Pointer<ffi.Int8> ownerPassword,
+    ffi.Pointer<ffi.Int8> userPassword,
+  ) {
+    return _getNumPages(
+      fileName,
+      logCallback,
+      ownerPassword,
+      userPassword,
+    );
+  }
+
+  late final _getNumPages_ptr =
+      _lookup<ffi.NativeFunction<_c_getNumPages>>('getNumPages');
+  late final _dart_getNumPages _getNumPages =
+      _getNumPages_ptr.asFunction<_dart_getNumPages>();
 }
 
 typedef _typedefC_1 = ffi.Void Function(
-  ffi.Pointer<ffi.Void>,
-  ffi.Pointer<ffi.Int8>,
-  ffi.Int32,
-);
-
-typedef _typedefC_2 = ffi.Void Function(
   ffi.Pointer<ffi.Int8>,
 );
 
@@ -61,8 +78,10 @@ typedef _c_extractText = ffi.Int32 Function(
   ffi.Int32 lastPage,
   ffi.Pointer<ffi.Int8> textOutEnc,
   ffi.Pointer<ffi.Int8> layout,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_1>> textOutputFunc,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_2>> logCallback,
+  ffi.Pointer<ffi.Pointer<ffi.Int8>> textOutput,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_1>> logCallback,
+  ffi.Pointer<ffi.Int8> ownerPassword,
+  ffi.Pointer<ffi.Int8> userPassword,
 );
 
 typedef _dart_extractText = int Function(
@@ -71,6 +90,26 @@ typedef _dart_extractText = int Function(
   int lastPage,
   ffi.Pointer<ffi.Int8> textOutEnc,
   ffi.Pointer<ffi.Int8> layout,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_1>> textOutputFunc,
+  ffi.Pointer<ffi.Pointer<ffi.Int8>> textOutput,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_1>> logCallback,
+  ffi.Pointer<ffi.Int8> ownerPassword,
+  ffi.Pointer<ffi.Int8> userPassword,
+);
+
+typedef _typedefC_2 = ffi.Void Function(
+  ffi.Pointer<ffi.Int8>,
+);
+
+typedef _c_getNumPages = ffi.Int32 Function(
+  ffi.Pointer<ffi.Int8> fileName,
   ffi.Pointer<ffi.NativeFunction<_typedefC_2>> logCallback,
+  ffi.Pointer<ffi.Int8> ownerPassword,
+  ffi.Pointer<ffi.Int8> userPassword,
+);
+
+typedef _dart_getNumPages = int Function(
+  ffi.Pointer<ffi.Int8> fileName,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_2>> logCallback,
+  ffi.Pointer<ffi.Int8> ownerPassword,
+  ffi.Pointer<ffi.Int8> userPassword,
 );
