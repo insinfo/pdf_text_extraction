@@ -1,7 +1,8 @@
 name: pdf_text_extraction
 description: pdf_text_extraction
 version: 1.0.0
-homepage: https://github.com/insinfo/xpdf
+homepage: https://github.com/insinfo/pdf_text_extraction
+#repository: https://github.com/insinfo/pdf_text_extraction
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

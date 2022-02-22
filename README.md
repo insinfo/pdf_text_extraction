@@ -3,7 +3,7 @@
 https://github.com/insinfo/xpdf
 
 
-### on linux this is the GNU v3 Standard C++ Library:
+### on linux it depends on the GNU v3 standard C++ library (libstdc++6):
  sudo apt-get install libstdc++6
 
 ### example 1 low level
