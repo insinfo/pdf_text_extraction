@@ -17,5 +17,6 @@ dev_dependencies:
   #for test only
   http: ^0.13.3
   postgres: ^2.4.3
-
+  intl: ^0.17.0
+  html: ^0.15.0
 #dart run ffigen --config ffigen.yaml
