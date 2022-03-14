@@ -24,7 +24,7 @@ class PDFToTextWrapping {
   PDFToTextWrapping() {
     var libraryPath = 'pdftotext.dll';
     if (Platform.isLinux) {
-      libraryPath = path.join(Directory.current.path, 'pdftotext.so');
+      libraryPath = path.join(Directory.current.path, 'libpdftotext.so');
     }
     final dylib = DynamicLibrary.open(libraryPath);
     pdfToTextBindings = PDFToTextBindings(dylib);

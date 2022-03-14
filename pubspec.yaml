@@ -1,6 +1,6 @@
 name: pdf_text_extraction
 description: pdf_text_extraction
-version: 1.0.0
+version: 1.2.0
 homepage: https://github.com/insinfo/pdf_text_extraction
 #repository: https://github.com/insinfo/pdf_text_extraction
 
@@ -19,4 +19,5 @@ dev_dependencies:
   postgres: ^2.4.3
   intl: ^0.17.0
   html: ^0.15.0
+  pdfium_bindings: ^1.2.0
 #dart run ffigen --config ffigen.yaml

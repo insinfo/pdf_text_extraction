@@ -20,7 +20,7 @@ class PDFTextExtractionWrapping {
   PDFTextExtractionWrapping() {
     var libraryPath = 'TextExtraction.dll';
     if (Platform.isLinux) {
-      libraryPath = path.join(Directory.current.path, 'TextExtraction.so');
+      libraryPath = path.join(Directory.current.path, 'libTextExtraction.so');
     }
     final dylib = ffi.DynamicLibrary.open(libraryPath);
     pdfTextExtractionBindings = PDFTextExtractionBindings(dylib);
