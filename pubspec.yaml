@@ -1,23 +1,23 @@
 name: pdf_text_extraction
 description: pdf_text_extraction
-version: 1.2.0
+version: 2.0.0
 homepage: https://github.com/insinfo/pdf_text_extraction
-#repository: https://github.com/insinfo/pdf_text_extraction
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
-  ffi: ^1.1.2
-  path: ^1.8.1 
+  ffi: '>=2.1.1 <4.0.0'
+  path: '>=1.9.0 <2.5.0'
   
-dev_dependencies: 
-  build_runner: ^2.1.2
-  ffigen: ^2.4.2
-  #for test only
-  http: ^0.13.3
-  postgres: ^2.4.3
-  intl: ^0.17.0
-  html: ^0.15.0
-  pdfium_bindings: ^1.2.0
+dev_dependencies:
+  build_runner: ^2.4.15
+  ffigen: ^19.0.0
+  http: ^1.6.0
+  lint: ^2.7.0 
+  test: ^1.26.3
+  pdfium_bindings: ^3.0.0
+  postgres: ^3.5.7
+  intl: ^0.20.2
+  html: ^0.15.6
 #dart run ffigen --config ffigen.yaml

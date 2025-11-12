@@ -33,23 +33,23 @@ Pointer<Int8> stringToNativeInt8(String str, {Allocator allocator = calloc}) {
 }
 
 String nativeInt8ToString(Pointer<Int8> pointer, {bool allowMalformed = true}) {
-  var ptrName = pointer.cast<Utf8>();
+  final ptrName = pointer.cast<Utf8>();
   final ptrNameCodeUnits = pointer.cast<Uint8>();
-  var list = ptrNameCodeUnits.asTypedList(ptrName.length);
+  final list = ptrNameCodeUnits.asTypedList(ptrName.length);
   return utf8.decode(list, allowMalformed: allowMalformed);
 }
 
 Uint8List nativeInt8ToCodeUnits(Pointer<Int8> pointer) {
-  var ptrName = pointer.cast<Utf8>();
+  final ptrName = pointer.cast<Utf8>();
   final ptrNameCodeUnits = pointer.cast<Uint8>();
-  var list = ptrNameCodeUnits.asTypedList(ptrName.length);
+  final list = ptrNameCodeUnits.asTypedList(ptrName.length);
   return list;
 }
 
 Uint8List nativeInt8ToUint8List(Pointer<Int8> pointer) {
-  var ptrName = pointer.cast<Utf8>();
+  final ptrName = pointer.cast<Utf8>();
   final ptrNameCodeUnits = pointer.cast<Uint8>();
-  var list = ptrNameCodeUnits.asTypedList(ptrName.length);
+  final list = ptrNameCodeUnits.asTypedList(ptrName.length);
   return list;
 }
 
@@ -59,18 +59,18 @@ Uint8List nativeInt8ToUint8List(Pointer<Int8> pointer) {
 /// Unix reserved filenames (. and ..)
 /// Trailing periods and spaces (for Windows)
 /// Windows reserved filenames (CON, PRN, AUX, NUL, COM1, COM2, COM3, COM4, COM5, COM6, COM7, COM8, COM9, LPT1, LPT2, LPT3, LPT4, LPT5, LPT6, LPT7, LPT8, and LPT9)
-String sanitizeFilename(String input, [replacement = '_']) {
-  var illegalRe = RegExp(r'[\/\?<>\\:\*\|"]', multiLine: true);
-  var controlRe = RegExp(r'[\x00-\x1f\x80-\x9f]', multiLine: true);
-  var reservedRe = RegExp(r'^\.+$');
-  var windowsReservedRe = RegExp(
+String sanitizeFilename(String input, [String replacement = '_']) {
+  final illegalRe = RegExp(r'[\/\?<>\\:\*\|"]', multiLine: true);
+  final controlRe = RegExp(r'[\x00-\x1f\x80-\x9f]', multiLine: true);
+  final reservedRe = RegExp(r'^\.+$');
+  final windowsReservedRe = RegExp(
       r'^(con|prn|aux|nul|com[1-9]|lpt[1-9])(\..*)?$',
       caseSensitive: false);
   // var windowsTrailingRe = RegExp(r'[\. ]+$');
 
   //╟O caractere invalido
 
-  var sanitized = input
+  final sanitizedBase = input
       .replaceAll('�', replacement)
       .replaceAll('А╟', replacement)
       .replaceAll('╟', replacement)
@@ -80,21 +80,19 @@ String sanitizeFilename(String input, [replacement = '_']) {
   //  .replaceAll(windowsReservedRe, replacement)
   // .replaceAll(windowsTrailingRe, replacement);
 
-  if (windowsReservedRe.hasMatch(input)) {
-    if (!input.contains('.')) {
-      sanitized = replacement + sanitized;
-    }
+  if (windowsReservedRe.hasMatch(input) && !input.contains('.')) {
+    return '$replacement$sanitizedBase';
   }
 
-  return sanitized;
+  return sanitizedBase;
   //return truncate(sanitized, 255);
 }
 
 bool isUft8MalformedStringPointer(Pointer<Int8> pointer) {
   try {
-    var ptrName = pointer.cast<Utf8>();
+    final ptrName = pointer.cast<Utf8>();
     final ptrNameCodeUnits = pointer.cast<Uint8>();
-    var list = ptrNameCodeUnits.asTypedList(ptrName.length);
+    final list = ptrNameCodeUnits.asTypedList(ptrName.length);
     utf8.decode(list);
     return false;
   } catch (e) {
@@ -112,15 +110,15 @@ Uint8List stringToUint8ListTo(String str) {
 
 /// combine/concatenate two Uint8List
 Uint8List concatUint8List(List<Uint8List> lists) {
-  var bytesBuilder = BytesBuilder();
-  lists.forEach((l) {
-    bytesBuilder.add(l);
-  });
+  final bytesBuilder = BytesBuilder();
+  for (final chunk in lists) {
+    bytesBuilder.add(chunk);
+  }
   return bytesBuilder.toBytes();
 }
 
 Pointer<Void> intToNativeVoid(int number) {
-  final ptr = calloc.allocate<Int32>(sizeOf<Int32>());
+  final ptr = calloc<Int32>();
   ptr.value = number;
   return ptr.cast();
 }
@@ -134,11 +132,11 @@ Pointer<Int8> uint8ListToPointerInt8(Uint8List units,
   return pointer.cast();
 }
 
-Future writeAndFlush(IOSink sink, object) {
-  return sink.addStream((StreamController<List<int>>(sync: true)
-        ..add(utf8.encode(object.toString()))
-        ..close())
-      .stream);
+Future<void> writeAndFlush(IOSink sink, Object? object) {
+  final controller = StreamController<List<int>>(sync: true)
+    ..add(utf8.encode(object.toString()))
+    ..close();
+  return sink.addStream(controller.stream);
 }
 
 extension Uint8ListBlobConversion on Uint8List {
