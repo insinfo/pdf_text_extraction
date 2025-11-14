@@ -58,7 +58,8 @@ class PDFToTextWrapping {
       throw ArgumentError.value(path, 'path', 'Path must not be empty.');
     }
     if (startPage < 1) {
-      throw ArgumentError.value(startPage, 'startPage', 'Start page must be >= 1.');
+      throw ArgumentError.value(
+          startPage, 'startPage', 'Start page must be >= 1.');
     }
     if (endPage < 0) {
       throw ArgumentError.value(endPage, 'endPage', 'End page must be >= 0.');
@@ -145,8 +146,8 @@ class PDFToTextWrapping {
         _logCallbackGetPagesCount,
       );
 
-      final result =
-          _bindings.getNumPages(pathPtr, logCallbackPtr, ownerPasswordPtr, userPasswordPtr);
+      final result = _bindings.getNumPages(
+          pathPtr, logCallbackPtr, ownerPasswordPtr, userPasswordPtr);
 
       if (result != -1) {
         return result;

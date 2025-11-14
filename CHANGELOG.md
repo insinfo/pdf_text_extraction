@@ -12,3 +12,7 @@
 - modernize the high-level wrappers with validation and dependency injection
 - add unit and integration tests (using the bundled 1417.pdf fixture)
 - refresh examples, README, and analysis configuration
+
+## 2.1.0
+
+- implemented PDFToTextWrappingService

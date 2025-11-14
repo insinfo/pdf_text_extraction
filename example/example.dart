@@ -28,8 +28,8 @@ void main() {
     -1,
     ffi.Pointer.fromFunction<
         ffi.Int32 Function(
-      ffi.Pointer<ffi.Int8>,
-    )>(logCallback, _fallbackResult),
+          ffi.Pointer<ffi.Int8>,
+        )>(logCallback, _fallbackResult),
   );
 
   malloc.free(uriPointer);

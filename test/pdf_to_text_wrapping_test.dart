@@ -44,7 +44,8 @@ class _FakePdfToTextBindings implements PDFToTextBindings {
     ffi.Pointer<ffi.Int8> textOutEnc,
     ffi.Pointer<ffi.Int8> layout,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> textOutput,
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int8>)>> logCallback,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int8>)>>
+        logCallback,
     ffi.Pointer<ffi.Int8> ownerPassword,
     ffi.Pointer<ffi.Int8> userPassword,
   ) {
@@ -61,14 +62,14 @@ class _FakePdfToTextBindings implements PDFToTextBindings {
     }
 
     if (extractTextStatus != 0 && extractTextErrorMessage != null) {
-    final log =
-      logCallback.asFunction<void Function(ffi.Pointer<ffi.Int8>)>();
-    final msgPtr = stringToNativeInt8(extractTextErrorMessage!);
+      final log =
+          logCallback.asFunction<void Function(ffi.Pointer<ffi.Int8>)>();
+      final msgPtr = stringToNativeInt8(extractTextErrorMessage!);
       log(msgPtr);
       calloc.free(msgPtr);
     }
 
-  final textPtr = stringToNativeInt8(extractTextResult);
+    final textPtr = stringToNativeInt8(extractTextResult);
     allocations.add(textPtr);
     textOutput.value = textPtr;
     return extractTextStatus;
@@ -77,7 +78,8 @@ class _FakePdfToTextBindings implements PDFToTextBindings {
   @override
   int getNumPages(
     ffi.Pointer<ffi.Int8> fileName,
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int8>)>> logCallback,
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Int8>)>>
+        logCallback,
     ffi.Pointer<ffi.Int8> ownerPassword,
     ffi.Pointer<ffi.Int8> userPassword,
   ) {
@@ -90,9 +92,9 @@ class _FakePdfToTextBindings implements PDFToTextBindings {
     }
 
     if (getNumPagesResult == -1 && getNumPagesErrorMessage != null) {
-    final log =
-      logCallback.asFunction<void Function(ffi.Pointer<ffi.Int8>)>();
-    final msgPtr = stringToNativeInt8(getNumPagesErrorMessage!);
+      final log =
+          logCallback.asFunction<void Function(ffi.Pointer<ffi.Int8>)>();
+      final msgPtr = stringToNativeInt8(getNumPagesErrorMessage!);
       log(msgPtr);
       calloc.free(msgPtr);
     }
@@ -156,8 +158,10 @@ void main() {
       final wrapper = PDFToTextWrapping(bindings: _FakePdfToTextBindings());
 
       expect(() => wrapper.extractText(''), throwsArgumentError);
-      expect(() => wrapper.extractText('demo.pdf', startPage: 0), throwsArgumentError);
-      expect(() => wrapper.extractText('demo.pdf', endPage: -1), throwsArgumentError);
+      expect(() => wrapper.extractText('demo.pdf', startPage: 0),
+          throwsArgumentError);
+      expect(() => wrapper.extractText('demo.pdf', endPage: -1),
+          throwsArgumentError);
       expect(
         () => wrapper.extractText('demo.pdf', startPage: 5, endPage: 3),
         throwsArgumentError,

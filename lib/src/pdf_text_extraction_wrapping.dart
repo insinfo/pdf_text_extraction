@@ -4,7 +4,7 @@ import 'dart:io' show Directory, Platform, stdout;
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
 import 'package:pdf_text_extraction/src/pdf_text_extraction_bindings.dart';
-import 'package:pdf_text_extraction/src/utils.dart';
+import 'package:pdf_text_extraction/src/utils/utils.dart';
 
 class PDFTextExtractionWrapping {
   PDFTextExtractionWrapping() : _bindings = _createBindings();
@@ -34,7 +34,8 @@ class PDFTextExtractionWrapping {
     int endPage = -1,
     ffi.Allocator allocator = calloc,
   }) {
-    final uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
+    final uriPointer =
+        stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       final result = _bindings.extractTextAsXML(
         uriPointer,
@@ -42,8 +43,8 @@ class PDFTextExtractionWrapping {
         endPage,
         ffi.Pointer.fromFunction<
             ffi.Int32 Function(
-          ffi.Pointer<ffi.Int8>,
-        )>(_logCallback, _fallbackCode),
+              ffi.Pointer<ffi.Int8>,
+            )>(_logCallback, _fallbackCode),
       );
 
       final text = nativeInt8ToString(result);
@@ -62,7 +63,8 @@ class PDFTextExtractionWrapping {
     int endPage = -1,
     ffi.Allocator allocator = calloc,
   }) {
-    final uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
+    final uriPointer =
+        stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       final result = _bindings.extractText(
         uriPointer,
@@ -70,8 +72,8 @@ class PDFTextExtractionWrapping {
         endPage,
         ffi.Pointer.fromFunction<
             ffi.Int32 Function(
-          ffi.Pointer<ffi.Int8>,
-        )>(_logCallback, _fallbackCode),
+              ffi.Pointer<ffi.Int8>,
+            )>(_logCallback, _fallbackCode),
       );
 
       final text = nativeInt8ToString(result);
@@ -88,14 +90,15 @@ class PDFTextExtractionWrapping {
     String inputPdfFilePath, {
     ffi.Allocator allocator = calloc,
   }) {
-    final uriPointer = stringToNativeInt8(inputPdfFilePath, allocator: allocator);
+    final uriPointer =
+        stringToNativeInt8(inputPdfFilePath, allocator: allocator);
     try {
       final result = _bindings.getPagesCount(
         uriPointer,
         ffi.Pointer.fromFunction<
             ffi.Int32 Function(
-          ffi.Pointer<ffi.Int8>,
-        )>(_logCallback, _fallbackCode),
+              ffi.Pointer<ffi.Int8>,
+            )>(_logCallback, _fallbackCode),
       );
 
       if (result != -1) {

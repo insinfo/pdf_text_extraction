@@ -92,6 +92,49 @@ void main() {
 `PDFToTextWrapping` also exposes `getPagesCount` and reports any native errors
 through the static `lastError` property.
 
+## Managing isolate contention
+
+When you need to invoke `PDFToTextWrapping` from multiple isolates, always go
+through `PDFToTextWrappingService`. The service coordinates access using a
+filesystem mutex and prevents the native library from being torn down while
+another isolate is still working with it.
+
+Running concurrent isolates without the service typically leads to native
+crashes similar to:
+
+```powershell
+PS C:\MyDartProjects\pdf_text_extraction> dart .\example\pdf_to_text_isolate_example.dart
+
+===== CRASH =====
+ExceptionCode=-1073741819, ExceptionFlags=0, ExceptionAddress=00007FFEFED58D5D
+...
+pc 0x000001780444b055 fp 0x000000426c8feb78 sp 0x000000426c8feab0 [Unoptimized] PDFToTextWrapping.getPagesCount
+```
+
+Using the service restores stability:
+
+```powershell
+PS C:\MyDartProjects\pdf_text_extraction> dart .\example\pdf_to_text_isolate_example.dart
+Isolate 0 extracted 1842 characters from the PDF.
+Isolate 3 extracted 1842 characters from the PDF.
+Isolate 1 extracted 1842 characters from the PDF.
+Isolate 2 extracted 1842 characters from the PDF.
+All isolates finished without fatal contention.
+```
+
+In real code, wire it up like this:
+
+```dart
+final service = PDFToTextWrappingService();
+await service.run((wrapper) {
+  final pages = wrapper.getPagesCount('document.pdf');
+  final text = wrapper.extractText('document.pdf', endPage: pages > 0 ? 1 : 0);
+  print(text);
+});
+```
+
+See `example/pdf_to_text_isolate_example.dart` for a complete runnable sample.
+
 ## Testing
 
 The repository ships with unit and integration tests. To use the integration
