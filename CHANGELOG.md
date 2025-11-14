@@ -15,4 +15,4 @@
 
 ## 2.1.0
 
-- implemented PDFToTextWrappingService
+- add `PDFToTextWrappingService` for coordinated multi-isolate usage
