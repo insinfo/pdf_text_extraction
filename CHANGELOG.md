@@ -16,3 +16,7 @@
 ## 2.1.0
 
 - add `PDFToTextWrappingService` for coordinated multi-isolate usage
+
+## 2.1.1
+
+- fix dll path

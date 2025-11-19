@@ -23,11 +23,26 @@ class PDFToTextWrapping {
   final PDFToTextBindings _bindings;
 
   static PDFToTextBindings _createBindings() {
-    final libraryPath = Platform.isLinux
-        ? path.join(Directory.current.path, 'libpdftotext.so')
-        : 'pdftotext.dll';
+    final libraryPath = _resolveLibraryPath(null);
     final dylib = ffi.DynamicLibrary.open(libraryPath);
     return PDFToTextBindings(dylib);
+  }
+
+  static String _resolveLibraryPath(String? overridePath) {
+    if (overridePath != null) {
+      return overridePath;
+    }
+
+    if (Platform.isMacOS) {
+      return path.join(Directory.current.path, 'libpdftotext.dylib');
+    }
+    if (Platform.isLinux) {
+      return path.join(Directory.current.path, 'libpdftotext.so');
+    }
+    if (Platform.isAndroid) {
+      return path.join(Directory.current.path, 'libpdftotext.so');
+    }
+    return path.join(Directory.current.path, 'pdftotext.dll');
   }
 
   static void _logCallbackExtractText(ffi.Pointer<ffi.Int8> msg) {

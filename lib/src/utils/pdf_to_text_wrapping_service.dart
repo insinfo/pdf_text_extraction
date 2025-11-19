@@ -1,6 +1,6 @@
 // file: pdf_to_text_wrapping_service.dart
 import 'dart:async';
-import 'dart:ffi' as ffi;
+
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
@@ -54,29 +54,8 @@ class PDFToTextWrappingService {
   }
 
   /// Creates a fresh [PDFToTextWrapping] backed by dedicated bindings.
-  PDFToTextWrapping _createWrapper() {
-    final libraryPath = _resolveLibraryPath();
-    final dylib = ffi.DynamicLibrary.open(libraryPath);
-    final bindings = PDFToTextBindings(dylib);
+  PDFToTextWrapping _createWrapper({PDFToTextBindings? bindings}) {
     return PDFToTextWrapping(bindings: bindings);
-  }
-
-  /// Resolves the native library path for the current environment.
-  String _resolveLibraryPath() {
-    final root = Directory.current.path;
-    final candidates = <String>[
-      p.join(root, 'pdftotext.dll'),
-      p.join(root, 'libpdftotext.so'),
-      p.join(root, 'libpdftotext.dylib'),
-    ];
-
-    for (final c in candidates) {
-      if (File(c).existsSync()) {
-        return c;
-      }
-    }
-
-    throw MissingLibraryException(path: candidates.first);
   }
 }
 
